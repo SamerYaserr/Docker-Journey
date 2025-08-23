@@ -1,0 +1,36 @@
+version: "3.9"
+# The Compose file format version. 3.9 is compatible with modern Docker Engine and Swarm.
+
+services:
+  # Defines the list of services (containers) in this Compose setup.
+  app:
+    # Name of the service. You can refer to this service as "app" in other configs or commands.
+
+    container_name: typescript-app
+    # Assigns a custom name to the container instead of the default auto-generated one.
+
+    build:
+      # Tells Compose to build the image using the Dockerfile in the current directory.
+      # This is somewhat redundant when you already define context and dockerfile above.
+      context: .
+      # The build context: the directory sent to the Docker daemon during build.
+      # Here, '.' means the current directory where docker-compose.yml is located.
+      dockerfile: Dockerfile
+      # (Optional) Specifies the Dockerfile name to use for building the image.
+      # If omitted, defaults to 'Dockerfile' in the context directory.
+
+    volumes:
+      - ./src/app:/src/app:ro
+      # Mounts a host directory (./src/app) into the container's directory (/src/app).
+      # ":ro" means read-only, so the container cannot modify these files.
+      # Useful for syncing code during development.
+
+    ports:
+      - "4000:4000"
+      # Maps host port 4000 to container port 4000.
+      # Allows accessing the app via http://localhost:4000 on the host machine.
+
+    env_file:
+      - ./.env
+      # Loads environment variables from the .env file in the current directory.
+      # Variables in this file will be available inside the container.
