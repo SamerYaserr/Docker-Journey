@@ -9,13 +9,16 @@ FROM node AS builder
 WORKDIR /app
 
 # Copy package.json and package-lock.json for dependency installation
-# This helps leverage Docker caching if dependencies don't change
+# We copy these files first to leverage Docker's layer caching.
+# Why? Because npm install is an expensive step. If only the source code changes (not dependencies),
+# Docker will reuse the cache for this layer and won't re-run npm install unnecessarily.
 COPY package*.json ./
 
 # Install all dependencies (including devDependencies) for building
 RUN npm install
 
 # Copy all application source files into the container
+# This comes AFTER npm install to avoid breaking the cache if source files change.
 COPY . .
 
 # Build the project (compile TypeScript files to JavaScript in the dist folder)
@@ -33,6 +36,7 @@ FROM node AS runner
 WORKDIR /app
 
 # Copy only the package files for installing production dependencies
+# Again, copying these first allows caching npm install for production.
 COPY package*.json ./
 
 # Install only production dependencies (no devDependencies)
