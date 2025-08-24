@@ -1,36 +1,26 @@
 version: "3.9"
-# The Compose file format version. 3.9 is compatible with modern Docker Engine and Swarm.
+# Which Compose file syntax to use (controls available features).
 
 services:
-  # Defines the list of services (containers) in this Compose setup.
+  # Start the list of services (containers) you want Docker Compose to manage).
+
   app:
-    # Name of the service. You can refer to this service as "app" in other configs or commands.
+    # The logical name of this service. Used by docker-compose and internal networking.
 
     container_name: typescript-app
-    # Assigns a custom name to the container instead of the default auto-generated one.
-
-    build:
-      # Tells Compose to build the image using the Dockerfile in the current directory.
-      # This is somewhat redundant when you already define context and dockerfile above.
-      context: .
-      # The build context: the directory sent to the Docker daemon during build.
-      # Here, '.' means the current directory where docker-compose.yml is located.
-      dockerfile: Dockerfile
-      # (Optional) Specifies the Dockerfile name to use for building the image.
-      # If omitted, defaults to 'Dockerfile' in the context directory.
-
-    volumes:
-      - ./src/app:/src/app:ro
-      # Mounts a host directory (./src/app) into the container's directory (/src/app).
-      # ":ro" means read-only, so the container cannot modify these files.
-      # Useful for syncing code during development.
+    # The actual Docker container name. Helpful for manual docker commands,
 
     ports:
+      # Begin a list of published port mappings. Maps host ports → container ports.
+
       - "4000:4000"
-      # Maps host port 4000 to container port 4000.
-      # Allows accessing the app via http://localhost:4000 on the host machine.
+      # Host port 4000 is forwarded to port 4000 inside the container.
+      # Access your app at http://localhost:4000 on the host machine.
 
     env_file:
+      # Begin a list of files whose KEY=VALUE lines become environment variables
+      # inside the container.
+
       - ./.env
-      # Loads environment variables from the .env file in the current directory.
-      # Variables in this file will be available inside the container.
+      # Use the .env file in the same folder as this compose file.
+      # Each line must be like: MY_VAR=value. Don’t store secrets in version control.

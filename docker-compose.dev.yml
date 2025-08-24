@@ -1,0 +1,34 @@
+version: "3.9"
+# Specifies the Compose file format version (3.9 works with modern Docker).
+
+services:
+  # Defines all the services (containers) to run in this setup.
+
+  app:
+    # The name of the service. Other services and Compose commands will use this name.
+
+    build:
+      # Configuration for building the Docker image from source.
+
+      context: .
+      # The build context: "." means the current directory (where Dockerfile and app code are).
+
+      dockerfile: Dockerfile
+      # The Dockerfile to use for building this image.
+
+      target: development
+      # Use a specific build stage from the Dockerfile (in your case, the "development" stage).
+
+    volumes:
+      # Volumes define file/folder sharing between host and container.
+
+      - ./src:/app/src:ro
+      # Maps the local ./src directory (host) to /app/src inside the container.
+      # The ":ro" means "read-only" (container can read files but cannot modify them).
+      # Useful for live-reloading code in dev environments.
+
+    environment:
+      # Defines environment variables for this container (as key=value pairs).
+
+      - NODE_ENV=development
+      # Sets NODE_ENV to "development". Your app can use this to enable dev mode features.

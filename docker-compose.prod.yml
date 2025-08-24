@@ -1,0 +1,30 @@
+version: "3.9"
+# Compose file format version (3.9 works with modern Docker Engine).
+
+services:
+  # Defines all the services (containers) in this Compose setup.
+
+  app:
+    # Service name: identifies this container in Compose and internal DNS.
+
+    build:
+      # Tells Docker Compose to build an image for this service.
+
+      context: .
+      # Build context: the folder sent to Docker during image build.
+      # Here "." means the current directory where the Dockerfile and app code exist.
+
+      dockerfile: Dockerfile
+      # Specifies which Dockerfile to use (defaults to "Dockerfile" in context folder).
+      # Including this makes it explicit.
+
+      target: production
+      # Selects a specific build stage from a multi-stage Dockerfile.
+      # Here it uses the "production" stage you defined in your Dockerfile.
+
+    environment:
+      # Sets environment variables inside the container.
+
+      - NODE_ENV=production
+      # Defines NODE_ENV as "production".
+      # Your app and some packages use this to enable optimizations for production.
