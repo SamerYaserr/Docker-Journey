@@ -24,6 +24,11 @@ services:
       - ./.env
       # Use the .env file in the same folder as this compose file.
       # Each line must be like: MY_VAR=value. Don’t store secrets in version control.
+    depends_on:
+      - mongo
+      - redis
+      # This service depends on the "mongo" and "redis" services being started first.
+      # Docker Compose will start them in the correct order.
 
   mongo:
     # A second service named "mongo" to run a MongoDB database.
@@ -58,6 +63,15 @@ services:
       ME_CONFIG_BASICAUTH_ENABLED: true
       ME_CONFIG_BASICAUTH_USERNAME: mongoexpressuser
       ME_CONFIG_BASICAUTH_PASSWORD: mongoexpresspass
+
+    depends_on:
+      - mongo
+      # This service depends on the "mongo" service being started first.
+
+  redis:
+    # A fourth service named "redis" to run a Redis in-memory data store.
+    image: redis
+    # Use the official "redis" image from Docker Hub.
 
 volumes:
   mongo-data:
