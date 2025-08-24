@@ -24,3 +24,15 @@ services:
       - ./.env
       # Use the .env file in the same folder as this compose file.
       # Each line must be like: MY_VAR=value. Don’t store secrets in version control.
+
+  mongo:
+    # A second service named "mongo" to run a MongoDB database.
+    image: mongo
+    # Use the official "mongo" image from Docker Hub.
+
+    restart: always
+    # Always restart the container if it stops (unless explicitly stopped).
+
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
