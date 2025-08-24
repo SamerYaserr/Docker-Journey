@@ -33,6 +33,16 @@ services:
     restart: always
     # Always restart the container if it stops (unless explicitly stopped).
 
+    volumes:
+      - mongo-data:/data/db
+      # Mount the named volume "mongo-data" (defined below) to /data/db inside the container.
+      # This is where MongoDB stores its data files, so they persist across container restarts.
+
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
+
+volumes:
+  mongo-data:
+    # A named volume to persist MongoDB data outside the container's lifecycle.
+    # Docker manages this volume's location on the host.
