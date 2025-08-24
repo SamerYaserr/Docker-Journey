@@ -42,6 +42,23 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
 
+  mongo-express:
+    # A third service named "mongo-express" to run a web-based MongoDB admin interface.
+    image: mongo-express
+    # Use the official "mongo-express" image from Docker Hub.
+    restart: always
+
+    ports:
+      - 8081:8081
+      # Host port 8081 is forwarded to port 8081 inside the container.
+      # Access mongo-express at http://localhost:8081 on the host machine.
+
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+      ME_CONFIG_BASICAUTH_ENABLED: true
+      ME_CONFIG_BASICAUTH_USERNAME: mongoexpressuser
+      ME_CONFIG_BASICAUTH_PASSWORD: mongoexpresspass
+
 volumes:
   mongo-data:
     # A named volume to persist MongoDB data outside the container's lifecycle.
